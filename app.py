@@ -9,13 +9,19 @@ st.title("🚨 UPI FRAUD ALERTS SYSTEM")
 # 2. Data Load karna (Teri CSV file)
 @st.cache_data
 def load_data():
+    # Make sure 'analyzed_upi_data.csv' tumhare folder mein ho
     return pd.read_csv('analyzed_upi_data.csv')
 
 df = load_data()
 
-# 3. Slicer (Sidebar Filter)
+# 3. Slicer (Sidebar Filter) - Smart Version
 st.sidebar.header("Filter Transactions")
-risk_level = st.sidebar.radio("Select Risk Level:", ["All", "High Risk", "Medium Risk", "Safe"])
+
+# Data mein se khud exact naam nikal kar button banayega
+unique_flags = df['Fraud_Flag'].unique().tolist()
+options = ["All"] + unique_flags  
+
+risk_level = st.sidebar.radio("Select Risk Level:", options)
 
 # Filter lagana
 if risk_level != "All":
